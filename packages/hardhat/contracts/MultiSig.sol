@@ -1,35 +1,8 @@
+// SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0 <0.9.0;
-//SPDX-License-Identifier: MIT
 
-
-// "YourContract" at 0x65f42c65705a31fE1d05E03E364b9c097794c363
-// reusing "MultiSigWallet" at 0x65d1F702714376af45578dbe7Bf606B0729Fbf2d
-
-
-import "hardhat/console.sol";
-// import "@openzeppelin/contracts/access/Ownable.sol"; 
-// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
-
-contract YourContract {
-
-  // event SetPurpose(address sender, string purpose);
-
-  // string public purpose = "Building Unstoppable Apps!!!";
-
-  // constructor() payable {
-  //   // what should we do on deploy?
-  // }
-
-  // function setPurpose(string memory newPurpose) public {
-  //     purpose = newPurpose;
-  //     console.log(msg.sender,"set purpose to",purpose);
-  //     emit SetPurpose(msg.sender, purpose);
-  // }
-
-  // // to support receiving ETH by default
-  // receive() external payable {}
-  // fallback() external payable {}
-  event Deposit(address indexed sender, uint amount);
+contract MultiSigWallet {
+    event Deposit(address indexed sender, uint amount);
     event Submit(uint indexed txId);
     event Approve(address indexed owner, uint indexed txId);
     event Revoke(address indexed owner, uint indexed txId);
@@ -71,9 +44,9 @@ contract YourContract {
     Transaction[] public transactions;
     //transaction uint, address of the owner
     mapping(uint => mapping(address => bool)) public approve;
-    constructor(){
-        owners.push(msg.sender);
-        contractOwner = msg.sender;
+    constructor(address _owner){
+        owners.push(_owner);
+        contractOwner = _owner;
         // require(_owners.length > 0, "owners requires");
         // require(_required > 0 && _required <= _owners.length,
         // "invalid required number os owner");
@@ -157,4 +130,5 @@ contract YourContract {
         approve[_txId][msg.sender] = false;
         emit Revoke(msg.sender, _txId);
     }
+
 }
